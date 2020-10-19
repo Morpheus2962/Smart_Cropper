@@ -41,9 +41,9 @@ __After running select the image you want to edit by clicking on "Click to Selec
 
 
 
-__Then if you want to crop drag the cross points to crop image and click "Crop" button__
+__Then if you want to crop drag the cross points to crop image and click "Crop" button and Enter the resolution of cropped Image__
 
-![Crop Image](Video/crop.gif)
+![Crop Image](Video/cropping.gif)
 
 
 
