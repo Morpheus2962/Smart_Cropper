@@ -58,5 +58,11 @@ Then to Save edited image click "Save" button
 ![Save Image](Video/save1.gif)
 
 
+  * Note : You can crop and apply filters to cropped image also.
+  
+  
+## License
 
-  *Note : You can crop and apply filters to cropped image also.
+The code in this project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+Note that you will be responsible for following terms of service of the third party APIs used in the code. 
