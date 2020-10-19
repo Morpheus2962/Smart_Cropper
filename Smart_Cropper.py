@@ -1,7 +1,8 @@
 # Import Required Libraries
 import pygame
 import tkinter
-from tkinter import filedialog, messagebox  
+from tkinter import *
+from tkinter import filedialog, messagebox, simpledialog 
 import os
 import time
 import cv2
@@ -76,6 +77,28 @@ def Open_file():
     root.lift()
     if len(tempdir) > 0:
         return tempdir
+# To take resolution of image
+class Resolution(simpledialog.Dialog):
+    x = 0
+    y = 0
+
+    def body(self, master):
+
+        Label(master, text="Enter Resolution ").grid(row=0)
+        Label(master, text="Width (x):").grid(row=1)
+        Label(master, text="Height (y):").grid(row=2)
+
+        self.e1 = Entry(master)
+        self.e2 = Entry(master)
+
+        self.e1.grid(row=1, column=1)
+        self.e2.grid(row=2, column=1)
+        return self.e1 # initial focus
+
+    def apply(self):
+        self.x = self.e1.get()
+        self.y = self.e2.get()
+        #print (first, second )
 
 # Draw main background image
 def Draw_Main(win,flag):
@@ -84,9 +107,11 @@ def Draw_Main(win,flag):
         pygame.display.update()
 
 # Draw 4 cross images(points) and connect them by lines
-def Draw_Window(win,tl,tr,bl,br,img , cropped):
+def Draw_Window(win,tl,tr,bl,br,img , cropped, dx, dy):
     global points
-    win.blit(img,(59,96))
+    r = (1024-dx)//2 + 59
+    t = 96
+    win.blit(img,(r,t))
     if not cropped:
         tl.draw(win)
         tr.draw(win)
@@ -147,9 +172,10 @@ def point_event(event, tl, tr, bl, br):
 
 
 # Crop and Straighten part of image according to points selected
-def Crop_img(img, points):
+def Crop_img(img, points, x, y):
     
     p = points
+    print(p)
     a = []
     for i in range(4):
 
@@ -162,8 +188,8 @@ def Crop_img(img, points):
     Rx = Resized_width/orignal_width
     Ry = Resized_height/orignal_height
     pts_src = np.array([[a[0][0]//Rx, a[0][1]//Ry], [a[1][0]//Rx, a[1][1]//Ry], [a[2][0]//Rx, a[2][1]//Ry], [a[3][0]//Rx, a[3][1]//Ry]])
-    pts_dst = np.array([[0,0], [orignal_width, 0], [ 0,orignal_height], [orignal_width, orignal_height]])
-    im_dst = np.zeros((orignal_height, orignal_width, 3), np.uint8)
+    pts_dst = np.array([[0,0], [x, 0], [ 0,y], [x, y]])
+    im_dst = np.zeros((y, x, 3), np.uint8)
     h, status = cv2.findHomography(pts_src, pts_dst)
     cropped = cv2.warpPerspective(img, h, (im_dst.shape[1],im_dst.shape[0]))
     return cropped
@@ -217,8 +243,6 @@ def main():
     flag = True
     imag_load = False
     cp = False
-    b = False
-    e = False
     win = pygame.display.set_mode((W,H))
     clock = pygame.time.Clock()
     global points
@@ -227,7 +251,9 @@ def main():
     run = True
     direction = 1
     cropped = False
-
+    dx=1024 
+    dy= 384
+    state = 0
     # Main loop
     while run:
         clock.tick(30)
@@ -240,8 +266,15 @@ def main():
             if Button_click(event, crop):
                 cropped = False
                 i = cv2.imread(img_path)
-                cropped_img = Crop_img(i, points)
-                IMAGE = pygame.transform.scale(cv2ImageToSurface(cropped_img), (1024, 576))
+                d = Resolution(root)
+                x = int(d.x)
+                y = int(d.y)
+                rx = 1024/x
+                ry = 576/y
+                dy = round(ry * y)
+                dx = round(ry * x)
+                cropped_img = Crop_img(i, points, x, y)
+                IMAGE = pygame.transform.scale(cv2ImageToSurface(cropped_img), (dx, dy))
                 cropped = True
                 cp = True
 
@@ -252,12 +285,12 @@ def main():
                     enhanced = Enhance_img(k)
                     IMAGE = pygame.transform.scale(cv2ImageToSurface(enhanced), (1024, 576))
                     cropped = True
-                    e = True
+                    state = 1
                 else:
                     enhanced = Enhance_img(cropped_img)
-                    IMAGE = pygame.transform.scale(cv2ImageToSurface(enhanced), (1024, 576))
+                    IMAGE = pygame.transform.scale(cv2ImageToSurface(enhanced), (dx, dy))
                     cropped = True
-                    e = True
+                    state = 1
 
             # B/W Filter Button        
             if Button_click(event, bw):
@@ -266,24 +299,24 @@ def main():
                     bw_img = Black_white(j)
                     IMAGE = pygame.transform.scale(cv2ImageToSurface(bw_img), (1024, 576))
                     cropped = True
-                    b = True
+                    state = 2
                 else:
                     bw_img = Black_white(cropped_img)
-                    IMAGE = pygame.transform.scale(cv2ImageToSurface(bw_img), (1024, 576))
+                    IMAGE = pygame.transform.scale(cv2ImageToSurface(bw_img), (dx, dy))
                     cropped = True
-                    b = True
+                    state = 2
 
             # Save Image Button            
             if Button_click(event, save):
                 abc = img_path.split('/')
                 path1 = img_path.replace(abc[-1], "")
-                if cp:
+                if state == 0:
                     Save_img(cropped_img, img_path, "Cropped")
                     messagebox.showinfo("Image Cropper", f"Image Saved Sucessfully at {path1}")
-                elif e:
+                elif state == 1:
                     Save_img(enhanced, img_path, "Enhanced")
                     messagebox.showinfo("Image Cropper", f"Image Saved Sucessfully at {path1}")
-                elif b:
+                elif state == 2:
                     Save_img(bw_img, img_path, "Black_white")
                     messagebox.showinfo("Image Cropper", f"Image Saved Sucessfully at {path1}")
 
@@ -298,7 +331,7 @@ def main():
 
         Draw_Main(win, flag)
         if imag_load:
-            Draw_Window(win,tl,tr,bl,br,IMAGE,cropped)
+            Draw_Window(win,tl,tr,bl,br,IMAGE,cropped,dx,dy)
             flag = False   
 main()
 
