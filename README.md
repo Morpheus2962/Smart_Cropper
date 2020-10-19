@@ -58,7 +58,7 @@ Then to Save edited image click "Save" button
 ![Save Image](Video/save1.gif)
 
 
-  * Note : You can crop and apply filters to cropped image also.
+ _Note : You can crop and apply filters to cropped image also._
   
   
 ## License
