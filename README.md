@@ -25,12 +25,28 @@ To use Smart Cropper run:
 	  $ python Smart_Cropper.py
 
 
-After running select the image you want to edit by clicking on "Click to Select Image" Button
+*After running select the image you want to edit by clicking on "Click to Select Image" Button
+
 ![Select Image](Video/Select_Image.gif)
-Then if you want to crop drag the cross points to crop image and click "Crop" button
+
+
+
+*Then if you want to crop drag the cross points to crop image and click "Crop" button
+
 ![Crop Image](Video/Crop_image.gif)
-If you want to apply filter click on "Enhance" or "B/W filter" button
+
+
+
+*If you want to apply filter click on "Enhance" or "B/W filter" button
+
 ![Filter Image](Video/filter.gif)
-Then to Save edited image click "Save" button
+
+
+
+*Then to Save edited image click "Save" button
+
 ![Save Image](Video/save.gif)
-Note : You can crop and apply filters to cropped image also.
+
+
+
+*Note : You can crop and apply filters to cropped image also.
