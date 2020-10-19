@@ -57,7 +57,6 @@ class Points:
             self.rect.center = pygame.mouse.get_pos()
             a, b= self.rect.center
             self.x, self.y = a-20 , b-20
-            #print(self.rect.center)
         win.blit(self.img, (self.x, self.y))
 
 # Funtion to check click on image        
@@ -175,7 +174,6 @@ def point_event(event, tl, tr, bl, br):
 def Crop_img(img, points, x, y):
     
     p = points
-    print(p)
     a = []
     for i in range(4):
 
