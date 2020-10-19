@@ -59,4 +59,4 @@ Then to Save edited image click "Save" button
 
 
 
-*Note : You can crop and apply filters to cropped image also.
+  *Note : You can crop and apply filters to cropped image also.
