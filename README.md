@@ -55,7 +55,7 @@ __If you want to apply filter click on "Enhance" or "B/W filter" button__
 
 __Then to Save edited image click "Save" button__
 
-![Save Image](Video/save1.gif)
+![Save Image](Video/save.gif)
 
 
  _Note : You can crop and apply filters to cropped image also._
