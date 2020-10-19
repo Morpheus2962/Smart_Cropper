@@ -55,7 +55,7 @@ If you want to apply filter click on "Enhance" or "B/W filter" button
 
 Then to Save edited image click "Save" button
 
-![Save Image](Video/save.gif)
+![Save Image](Video/save1.gif)
 
 
 
