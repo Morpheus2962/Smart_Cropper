@@ -35,7 +35,7 @@ After running select the image you want to edit by clicking on "Click to Select 
 
    
 
-![Select Image](Video/Select_Image.gif)
+![Select Image](Video/select.gif)
 
 
 
@@ -43,7 +43,7 @@ After running select the image you want to edit by clicking on "Click to Select 
 
 Then if you want to crop drag the cross points to crop image and click "Crop" button
 
-![Crop Image](Video/Crop_image.gif)
+![Crop Image](Video/crop.gif)
 
 
 
